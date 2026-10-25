@@ -124,20 +124,34 @@
   /* ============================================================
      注意事項（読んで「理解して進める」を押してから入力へ）
      ============================================================ */
+  // トップの上に浮かぶ小窓として出す（後ろのトップはグレーで覆う）
   function renderNotice() {
-    var s = el('<div class="screen"></div>');
-    s.innerHTML = header() +
-      '<div class="notice">' +
-        '<h2 class="notice-title">はじめる前に</h2>' +
-        '<p class="notice-text">' + esc(NOTICE) + '</p>' +
-      '</div>' +
-      '<div class="actions">' +
-        '<button class="btn-primary" id="agreeBtn">理解して進める</button>' +
-        '<button class="btn-ghost" id="backBtn">← もどる</button>' +
-      '</div>';
-    mount(s);
-    qs("#agreeBtn", s).addEventListener("click", renderForm);
-    qs("#backBtn", s).addEventListener("click", renderIntro);
+    var old = qs(".nt-ov");
+    if (old) old.remove();
+    var ov = el('<div class="nt-ov" role="dialog" aria-modal="true" aria-labelledby="ntTitle">' +
+      '<div class="nt-box">' +
+        '<div class="notice">' +
+          '<h2 class="notice-title" id="ntTitle">はじめる前に</h2>' +
+          '<p class="notice-text">' + esc(NOTICE) + '</p>' +
+        '</div>' +
+        '<div class="actions">' +
+          '<button class="btn-primary" id="agreeBtn">理解して進める</button>' +
+          '<button class="btn-ghost" id="backBtn">← もどる</button>' +
+        '</div>' +
+      '</div></div>');
+    document.body.appendChild(ov);
+    var opener = document.activeElement;
+    function close() {
+      document.removeEventListener("keydown", onKey);
+      ov.remove();
+      if (opener && opener.focus) opener.focus();
+    }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    document.addEventListener("keydown", onKey);
+    ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
+    qs("#backBtn", ov).addEventListener("click", close);
+    qs("#agreeBtn", ov).addEventListener("click", function () { close(); renderForm(); });
+    qs("#agreeBtn", ov).focus();
   }
 
   /* ============================================================
@@ -192,7 +206,7 @@
         email: form.elements.email.value.trim(), own: own.checked };
     }
     bindTabs(s, function (next) { draft = read(); tab = next; renderForm(); qs("#tab-" + next).focus(); });
-    qs("#backBtn", s).addEventListener("click", renderNotice);
+    qs("#backBtn", s).addEventListener("click", function () { renderIntro(); renderNotice(); });
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var v = read();

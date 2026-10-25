@@ -696,3 +696,12 @@ a { color: inherit; }
 .ch-btn.ch-none:active { transform: none; box-shadow: none; }
 .ch-btn.is-on { outline: 3px solid var(--primary-soft); outline-offset: 2px; }
 .ch-more .btn-primary { border-radius: 14px; }
+/* タイトルの上の線画 */
+.fig-art { width: 100%; max-width: 220px; margin: 0 auto 6px; }
+.fig-art svg { display: block; width: 100%; height: auto; }
+.fig-art-lens { animation: fig-scan 3.6s ease-in-out infinite; transform-origin: 168px 96px; }
+.fig-art-spark { animation: fig-twinkle 2.4s ease-in-out infinite; }
+.fig-art-spark--2 { animation-delay: 1.2s; }
+@keyframes fig-scan { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-16px, -10px); } }
+@keyframes fig-twinkle { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .fig-art-lens, .fig-art-spark { animation: none; } }

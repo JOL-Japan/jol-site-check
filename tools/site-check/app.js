@@ -80,6 +80,21 @@
     ["eye", "見るだけ・侵入しない", "診断では、入力されたページを見るだけです（ふだんは1回。表示できないときだけ、読み直しや同じサイトのトップページの確認をします）。ログインや侵入を試すことは一切しません。"]
   ];
 
+  // タイトルの上の線画：ブラウザの画面を虫めがねで調べ、盾のチェックで安心を表す（白い線だけ）
+  var HERO_ART =
+    '<svg viewBox="0 0 220 140" width="220" height="140" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+      '<rect x="22" y="18" width="150" height="104" rx="12" fill="rgba(255,255,255,0.12)"/>' +
+      '<path d="M22 40h150"/>' +
+      '<circle cx="36" cy="29" r="2.4"/><circle cx="46" cy="29" r="2.4"/><circle cx="56" cy="29" r="2.4"/>' +
+      '<path d="M38 58h54M38 72h40M38 86h48M38 100h30" stroke-opacity="0.75"/>' +
+      '<path d="M128 54l17 6.5v12c0 10-7.2 17.6-17 20.5-9.8-2.9-17-10.5-17-20.5v-12z" fill="rgba(255,255,255,0.18)"/>' +
+      '<path d="M120.5 73.5l5.2 5.2 9.8-10.2"/>' +
+      '<g class="fig-art-lens"><circle cx="168" cy="96" r="20" fill="rgba(255,255,255,0.16)"/><path d="M182.5 110.5l16 16"/>' +
+        '<path d="M159 90a11 11 0 0 1 9-6" stroke-opacity="0.8"/></g>' +
+      '<path class="fig-art-spark" d="M196 30v12M190 36h12"/>' +
+      '<path class="fig-art-spark fig-art-spark--2" d="M12 92v8M8 96h8"/>' +
+    '</svg>';
+
   function renderIntro() {
     var guards = GUARDS.map(function (g) {
       return '<li><span class="ti">' + ICONS[g[0]] + '</span><div><p class="tt">' + g[1] + '</p><p class="td">' + g[2] + '</p>' +
@@ -92,6 +107,7 @@
         '<div class="fig-wm" aria-hidden="true">JOL</div>' +
         '<div class="fig-body">' +
           '<span class="fig-badge">会社名かURLを入れるだけ・約10秒</span>' +
+          '<div class="fig-art" aria-hidden="true">' + HERO_ART + '</div>' +
           '<h1 class="fig-title">かんたんサイト診断</h1>' +
           '<p class="fig-sub">ホームページに PHP や WordPress が<br />使われているか、リスクはあるか。<br />外から見える範囲で、目安をお出しします。</p>' +
           '<details class="guard">' +

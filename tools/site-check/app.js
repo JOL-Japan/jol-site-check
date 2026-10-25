@@ -15,7 +15,7 @@
   var app = document.getElementById("app");
   var draft = { url: "", company: "", email: "", own: false };
   var formShownAt = 0; // 入力画面を開いた時刻（ボットらしい速さの送信を見分ける）
-  var tab = "url"; // 入力画面のタブ（company=会社名から調べる / url=URLで調べる）
+  var tab = "url"; // 入力画面のタブ（url=URLで調べる・既定 / company=会社名から調べる）
 
   var NOTICE = "この診断は、公開されているページから外形的に読み取れる情報をもとにした目安です。" +
     "ホームページやサーバーの安全性を保証したり、内部まで診断したりするものではありません。" +
@@ -135,7 +135,7 @@
       '<p class="field-err"></p></div>';
   }
 
-  var TABS = [["company", "会社名から調べる"], ["url", "URLで調べる"]];
+  var TABS = [["url", "URLで調べる"], ["company", "会社名から調べる"]]; // 左が既定の URL
 
   function tabs() {
     return '<div class="tabs" role="tablist" aria-label="調べ方">' + TABS.map(function (t) {

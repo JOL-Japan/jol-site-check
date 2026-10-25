@@ -721,3 +721,8 @@ a { color: inherit; }
 @keyframes nt-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes nt-pop { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .nt-ov, .nt-box { animation: none; } }
+/* 「はじめる前に」の小窓：見出しは中央、本文は小さめ、内側の余白を広めに */
+.nt-ov { padding: 24px; }
+.nt-box { padding: 32px 28px 20px; }
+.nt-box .notice-title { text-align: center; margin-bottom: 16px; }
+.nt-box .notice-text { font-size: 13px; line-height: 1.9; }

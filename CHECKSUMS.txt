@@ -1,7 +1,7 @@
 # jol-jp.com で配信しているファイルの SHA-256
 # 確認: curl -s https://jol-jp.com/<パス> | shasum -a 256
 0d25cb6d5cf96f711f278c9c9a668b2c98ed8ec1caba8b7ef3e55855e5c77f2f  /tools/site-check/
-47da8f39a287bc72fccb34595399e5d8b1a91dcdd38db7af3f45e9e554de7fc7  /tools/site-check/app.js
+5f6edc060462158320a1d5282101f0e220b215306080d72074fdd0a80472c6e9  /tools/site-check/app.js
 8d424c3b1db1c84b276343d6f03986edfb1c20bc970351c9bb48848a4ff19013  /tools/site-check/styles.css
 c8d888326fff20aa70ce62d93d04688eeab2bd88b819b310f9da10b311314e55  /tools/site-check/assets/logo-orange.svg
 3d818bba033f3847f69a34d4de9203520212ac2f787f6905ed25699446f278ea  /tools/site-check/assets/logo-white.svg

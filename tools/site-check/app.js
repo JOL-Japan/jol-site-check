@@ -105,7 +105,7 @@
       '<div class="fig-intro">' +
         '<div class="fig-top"><img class="fig-logo" src="' + A + 'logo-white.svg" alt="JOL" /></div>' +
         '<div class="fig-body">' +
-          '<span class="fig-badge">会社名かURLを入れるだけ・約10秒</span>' +
+          '<span class="fig-badge">たった5秒で分析！</span>' +
           '<div class="fig-art" aria-hidden="true">' + HERO_ART + '</div>' +
           '<h1 class="fig-title">かんたんサイト診断</h1>' +
           '<p class="fig-sub">ホームページに PHP や WordPress が<br />使われているか、リスクはあるか。<br />外から見える範囲で、目安をお出しします。</p>' +
@@ -113,7 +113,7 @@
             '<summary><span class="ti">' + ICONS.shield + '</span><span class="g-t">このサイト自体の<br />セキュリティーを守るしくみ</span><span class="g-chev">' + ICONS.chev + '</span></summary>' +
             '<ul class="trust">' + guards + '</ul>' +
           '</details>' +
-          '<div class="actions"><button class="fig-start" id="startBtn">診断をはじめる</button></div>' +
+          '<div class="actions"><button class="fig-start" id="startBtn">今すぐ無料分析</button></div>' +
         '</div>' +
         '<p class="fig-copy">JOL all right reserved.</p>' +
       '</div>';
@@ -343,7 +343,7 @@
     s.innerHTML = header() +
       '<div class="scan-wait" role="status"><div class="scan-ring" aria-hidden="true"></div>' +
       '<p class="scan-t">' + (title || "サイトを確認しています…") + '</p>' +
-      '<p class="scan-d">' + (desc || "入力されたページを確認しています。10秒ほどお待ちください。") + '</p></div>';
+      '<p class="scan-d">' + (desc || "入力されたページを確認しています。数秒お待ちください。") + '</p></div>';
     mount(s);
   }
 
@@ -509,7 +509,7 @@
 
         var fy = cardY + cardH + 100;
         c.textAlign = "center"; c.fillStyle = "#fff";
-        c.font = "700 40px " + F; c.fillText("あなたのサイトも約10秒で診断", W / 2, fy);
+        c.font = "700 40px " + F; c.fillText("あなたのサイトも5秒で無料分析", W / 2, fy);
         c.font = "500 32px " + F; c.fillText(TOOL_URL.replace("https://", ""), W / 2, fy + 58);
         return new Promise(function (ok) { cv.toBlob(function (b) { ok({ blob: b, url: cv.toDataURL("image/png") }); }, "image/png"); });
       });

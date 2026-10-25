@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- 外部読み込みは Googleフォントのみ。入力の送信先は自サイトの /api だけ -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'" />
+  <meta name="referrer" content="no-referrer" />
+  <title>かんたんサイト診断｜JOL</title>
+  <meta name="description" content="ホームページのURLを入れるだけで、PHPやWordPressが使われているか、リスクの目安を確認できます。公開ページを見るだけでサイトに負荷はかけません。結果はあくまで目安です。" />
+  <!-- 検索結果には出さない -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=3" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512.png?v=3" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=3" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/tools/site-check/styles.css" />
+</head>
+<body>
+  <main id="app" class="app" aria-live="polite"></main>
+  <script src="/tools/site-check/app.js"></script>
+</body>
+</html>

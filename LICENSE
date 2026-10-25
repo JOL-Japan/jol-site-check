@@ -1,0 +1,29 @@
+Copyright (c) 2026 株式会社NUTS (JOL). All rights reserved.
+
+閲覧のみを許可するライセンス（View-Only License）
+
+このリポジトリのソースコードは、かんたんサイト診断（https://jol-jp.com/tools/site-check/）が
+どのように動いているかを、利用者や第三者が確認できるようにする目的で公開しています。
+
+1. 許可すること
+   このリポジトリを閲覧し、内容を読み、安全性や動作を確認・検証すること。
+   検証のために、ご自身の端末へ一時的に複製し、手元で実行・テストすること。
+
+2. 許可しないこと（書面による事前の許諾がある場合を除きます）
+   - ソースコードの全部または一部を、ほかのソフトウェア・サービス・ウェブサイトに組み込むこと
+   - 改変したもの、または改変していないものを、再配布・公開・販売・貸与すること
+   - このコードをもとに、同種のサービスを提供すること
+
+3. 無保証
+   このソースコードは現状のまま提供され、明示・黙示を問わず、いかなる保証もありません。
+   ソースコードの閲覧・検証・実行によって生じた損害について、著作権者は責任を負いません。
+
+4. 問題を見つけたとき
+   不具合や安全上の問題に気づいた場合は、https://jol-jp.com/contact からお知らせください。
+
+---
+
+English summary: This source code is published for transparency only. You may view, read and
+locally run it to verify how the service works. You may not use, copy into other works, modify,
+redistribute, or offer a similar service based on it without prior written permission.
+Provided "AS IS", without warranty of any kind.

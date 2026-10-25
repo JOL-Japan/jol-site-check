@@ -104,7 +104,6 @@
     s.innerHTML =
       '<div class="fig-intro">' +
         '<div class="fig-top"><img class="fig-logo" src="' + A + 'logo-white.svg" alt="JOL" /></div>' +
-        '<div class="fig-wm" aria-hidden="true">JOL</div>' +
         '<div class="fig-body">' +
           '<span class="fig-badge">会社名かURLを入れるだけ・約10秒</span>' +
           '<div class="fig-art" aria-hidden="true">' + HERO_ART + '</div>' +

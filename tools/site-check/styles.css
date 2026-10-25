@@ -705,3 +705,9 @@ a { color: inherit; }
 @keyframes fig-scan { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-16px, -10px); } }
 @keyframes fig-twinkle { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .fig-art-lens, .fig-art-spark { animation: none; } }
+/* 入口のひとこと：背景の楕円なし、左右に「＼ ／」の線 */
+.fig-intro .fig-badge { display: inline-flex; align-items: center; gap: 12px; background: none; padding: 0; border-radius: 0;
+  font-size: 15px; letter-spacing: .02em; }
+.fig-intro .fig-badge::before, .fig-intro .fig-badge::after { content: ""; width: 2px; height: 20px; border-radius: 2px; background: currentColor; }
+.fig-intro .fig-badge::before { transform: rotate(-32deg); }
+.fig-intro .fig-badge::after { transform: rotate(32deg); }

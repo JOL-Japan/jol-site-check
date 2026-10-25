@@ -169,7 +169,8 @@
         (isCompany
           ? '<p class="tab-lead">会社名を入れると、こちらでホームページを探して候補をお見せします。</p>'
           : field("url", "ホームページのURL", "url", "https://example.co.jp", 'inputmode="url" autocomplete="url" maxlength="200"')) +
-        field("company", "会社名", "text", "株式会社〇〇", 'autocomplete="organization" maxlength="80"') +
+        // 会社名は「会社名から調べる」ときだけ聞く（URLで調べるときは不要）
+        (isCompany ? field("company", "会社名", "text", "株式会社〇〇", 'autocomplete="organization" maxlength="80"') : '') +
         field("email", "メールアドレス", "email", "you@example.co.jp", 'inputmode="email" autocomplete="email" maxlength="120"') +
         // ボット用の見えない欄
         '<input type="text" name="hp_x" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />' +
@@ -187,7 +188,7 @@
     var own = form.elements.own;
     own.checked = !!draft.own;
     function read() {
-      return { url: isCompany ? draft.url : form.elements.url.value.trim(), company: form.elements.company.value.trim(),
+      return { url: isCompany ? draft.url : form.elements.url.value.trim(), company: isCompany ? form.elements.company.value.trim() : draft.company,
         email: form.elements.email.value.trim(), own: own.checked };
     }
     bindTabs(s, function (next) { draft = read(); tab = next; renderForm(); qs("#tab-" + next).focus(); });
@@ -198,7 +199,7 @@
       draft = v;
       var errs = {};
       if (!isCompany && !/^(https?:\/\/)?[^\s\/.]+\.[^\s]+$/i.test(v.url)) errs.url = "URLをご確認ください（例：https://example.co.jp）";
-      if (!v.company) errs.company = "会社名を入力してください";
+      if (isCompany && !v.company) errs.company = "会社名を入力してください";
       else if (isCompany && v.company.length < 2) errs.company = "会社名を正式な名前で入力してください";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) errs.email = "メールアドレスをご確認ください";
       ["url", "company", "email"].forEach(function (k) {
@@ -210,7 +211,7 @@
       if (Object.keys(errs).length) return;
       if (!v.own) return toast("管理しているホームページかどうかの確認にチェックしてください");
       if (isCompany) findSites(v, form.elements.hp_x.value);
-      else submit(v, form.elements.hp_x.value);
+      else submit({ url: v.url, company: "", email: v.email }, form.elements.hp_x.value);
     });
   }
 

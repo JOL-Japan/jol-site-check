@@ -133,12 +133,21 @@ describe("handler", () => {
   test("入力不足・同意なしは 400、診断も転送もしない", async () => {
     let called = 0;
     const deps = { scanSite: async () => { called++; return WP_SCAN; }, forward: async () => { called++; return "ok"; } };
-    for (const [i, b] of [{ ...INPUT, url: "http://10.0.0.1" }, { ...INPUT, company: " " }, { ...INPUT, email: "x@" }, { ...INPUT, agree: false }].entries()) {
+    for (const [i, b] of [{ ...INPUT, url: "http://10.0.0.1" }, { ...INPUT, email: "x@" }, { ...INPUT, agree: false }].entries()) {
       const res = mockRes();
       await handler(req(b, "203.0.113." + (20 + i)), res, deps);
       assert.equal(res.statusCode, 400);
     }
     assert.equal(called, 0);
+  });
+
+  test("URLで調べるときは会社名なしで診断できる（会社名は null で送る）", async () => {
+    const sent = [];
+    const res = mockRes();
+    await handler(req({ ...INPUT, company: "" }, "203.0.113.77"), res, { scanSite: async () => WP_SCAN, forward: async (p) => { sent.push(p); return "ok"; } });
+    assert.equal(res.statusCode, 200);
+    assert.equal(sent[0].company, null);
+    assert.equal(sent[0].url, "https://example.co.jp/");
   });
 
   test("見えない欄が埋まっていたら診断も転送もせず、押し直しを促す", async () => {

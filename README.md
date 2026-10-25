@@ -11,7 +11,7 @@ https://jol-jp.com/tools/site-check/ のソースコードです。
 
 | | 内容 | 該当するコード |
 |---|---|---|
-| 入力 | サイトのURL（または会社名から探したホームページ）・会社名・メールアドレスだけ | [tools/site-check/app.js](tools/site-check/app.js) |
+| 入力 | 「URLで調べる」はサイトのURL・メールアドレスだけ、「会社名から調べる」は会社名・メールアドレスだけ | [tools/site-check/app.js](tools/site-check/app.js) |
 | 会社名から調べる | 「会社名から調べる」を使ったときだけ、ホームページの候補を探すために **会社名だけ** を検索サービス（Firecrawl）に送ります。メールアドレスは送りません。同じ会社名の結果は24時間使い回します | [api/_findsite.js](api/_findsite.js) |
 | 送信先 | `https://jol-jp.com/api/site-check` のみ。ページの設定（CSP）で、ほかの宛先へは送れないようにしています | [tools/site-check/index.html](tools/site-check/index.html) |
 | 診断 | ふだんは入力されたページに GET を **1回** 送るだけです（サイト側の転送は5回まで追います）。表示できないときだけ読み直します：証明書の設定に不備があれば検証を外して1回、https に繋がらなければ http で1回、それでもだめなら同じサイトのトップページを同じ手順で。1回の診断で使う時間は15秒までです。ログイン・パスの総当たり・脆弱性の試し打ちはしません | [api/_sitescan.js](api/_sitescan.js) |

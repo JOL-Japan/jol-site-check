@@ -57,7 +57,7 @@ const noStore = (res) => res.setHeader("Cache-Control", "no-store");
 export function buildSiteCheckPayload({ company, email, url, rid = null }, j, page = null) {
   return {
     source: "site-check",
-    company, email, url,
+    company: company || null, email, url,
     level: LEVEL_OUT[j.level] ?? null,
     flags: j.flags.map((f) => ({ lv: f.lv === "r" ? "r" : "y", t: String(f.t).slice(0, 80) })),
     rid,
@@ -70,7 +70,7 @@ export function buildSiteCheckPayload({ company, email, url, rid = null }, j, pa
 export function buildChoicePayload({ company, email, url, rid, choice, message, tel }, page = null) {
   return {
     source: "site-check",
-    company, email, url, tel: tel || null, message: message || null,
+    company: company || null, email, url, tel: tel || null, message: message || null,
     rid, choice, page,
   };
 }
@@ -113,7 +113,7 @@ async function handle(req, res, deps, p) {
   const company = String(p.company ?? "").trim().slice(0, 80);
   const email = String(p.email ?? "").trim().slice(0, 160);
   if (!url) return res.status(400).json({ error: "invalid url" });
-  if (!company) return res.status(400).json({ error: "company is required" });
+  // 会社名は任意（URLで調べるときは聞かない。管理システム側でページの題名から補う）
   if (!EMAIL_RE.test(email)) return res.status(400).json({ error: "invalid email" });
   if (p.agree !== true) return res.status(400).json({ error: "agreement is required" });
 

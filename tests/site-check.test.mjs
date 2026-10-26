@@ -150,12 +150,10 @@ describe("handler", () => {
     assert.equal(sent[0].url, "https://example.co.jp/");
   });
 
-  test("見えない欄が埋まっていたら診断も転送もせず、押し直しを促す", async () => {
-    let called = 0;
+  test("ブラウザの自動入力で余計な欄が埋まっていても、人は止めない", async () => {
     const res = mockRes();
-    await handler(req({ ...INPUT, hp_x: "spam" }), res, { scanSite: async () => { called++; }, forward: async () => { called++; } });
-    assert.equal(res.statusCode, 409);
-    assert.equal(called, 0);
+    await handler(req({ ...INPUT, hp_x: "自動入力された値" }, "203.0.113.88"), res, { scanSite: async () => WP_SCAN, forward: async () => "ok" });
+    assert.equal(res.statusCode, 200);
   });
 
   test("同じサイトへの診断は1時間に30回まで", async () => {
@@ -286,10 +284,10 @@ describe("handler", () => {
     assert.equal(n, 0);
   });
 
-  test("会社名での検索は同じIPから1分に3回・1時間に10回まで（速すぎる送信・見えない欄・ほかのサイトからは検索しない）", async () => {
+  test("会社名での検索は同じIPから1分に3回・1時間に10回まで（速すぎる送信・ほかのサイトからは検索しない）", async () => {
     let n = 0;
     const deps = { findSites: async () => { n++; return SITES; } };
-    for (const b of [{ ...FIND, t: 100 }, { ...FIND, hp_x: "spam" }]) {
+    for (const b of [{ ...FIND, t: 100 }]) {
       const res = mockRes();
       await handler(req(b, "203.0.113.40"), res, deps);
       assert.equal(res.statusCode, 409);

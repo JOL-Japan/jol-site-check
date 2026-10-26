@@ -154,8 +154,6 @@
         // 会社名は「会社名から調べる」ときだけ聞く（URLで調べるときは不要）
         (isCompany ? field("company", "会社名", "text", "株式会社〇〇", 'autocomplete="organization" maxlength="80"') : '') +
         field("email", "メールアドレス", "email", "you@example.co.jp", 'inputmode="email" autocomplete="email" maxlength="120"') +
-        // ボット用の見えない欄
-        '<input type="text" name="hp_x" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />' +
         '<label class="consent"><input type="checkbox" name="own" />ご自身または自社で管理しているホームページです</label>' +
         // 開始前の注意事項（旧「はじめる前に」）もここにまとめる。小窓を挟むと離れる人が増えるため
         '<p class="form-note">入力いただいた内容は、診断結果のご連絡とご相談への対応にだけ使い、JOLの社内で管理します。' +
@@ -195,8 +193,8 @@
       });
       if (Object.keys(errs).length) return;
       if (!v.own) return toast("管理しているホームページかどうかの確認にチェックしてください");
-      if (isCompany) findSites(v, form.elements.hp_x.value);
-      else submit({ url: v.url, company: "", email: v.email }, form.elements.hp_x.value);
+      if (isCompany) findSites(v);
+      else submit({ url: v.url, company: "", email: v.email });
     });
   }
 
@@ -215,19 +213,30 @@
     });
   }
 
+  // 送信。入力画面を開いてすぐ（自動入力などで1秒未満）だとサーバーが 409 を返すので、
+  // 少し待って1回だけ自動で送り直す（人に「もう一度押して」と言わせない）。body は送るたびに作り直す（経過時間を入れ直す）
+  function post(makeBody) {
+    var send = function () {
+      return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(makeBody()), credentials: "omit" });
+    };
+    return send().then(function (r) {
+      if (r.status !== 409) return r;
+      return new Promise(function (ok) { setTimeout(ok, 1200); }).then(send);
+    });
+  }
+
   /* ============================================================
      会社名からホームページの候補を探す
      ============================================================ */
-  function findSites(v, hp) {
+  function findSites(v) {
     renderLoading("ホームページを探しています…", "会社名で検索しています。数秒お待ちください。");
-    var body = { kind: "find", company: v.company, hp_x: hp, t: Date.now() - formShownAt };
-    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "omit" })
+    post(function () { return { kind: "find", company: v.company, t: Date.now() - formShownAt }; })
       .then(function (r) {
         if (r.status === 429 || r.status === 409 || r.status === 400) throw new Error(String(r.status));
         if (!r.ok) throw new Error(r.status === 503 ? "busy" : "search");
         return r.json();
       })
-      .then(function (j) { renderCandidates(j.sites || [], v, hp); })
+      .then(function (j) { renderCandidates(j.sites || [], v); })
       .catch(function (err) {
         var m = err && err.message;
         if (m === "429" || m === "409" || m === "400") {
@@ -236,7 +245,7 @@
             m === "400" ? "会社名だけを入力してください（例：株式会社〇〇）" :
             "短い間に検索が続いたため、少しおいてお試しください");
         }
-        renderCandidates(null, v, hp, m === "busy");
+        renderCandidates(null, v, m === "busy");
       });
   }
 
@@ -269,7 +278,7 @@
 
   // sites が null のときは検索そのものに失敗した（busy=検索が混み合っている）。
   // それでもメールアドレスのドメインがあれば候補に出す
-  function renderCandidates(sites, v, hp, busy) {
+  function renderCandidates(sites, v, busy) {
     var list = candidateList(sites, v.email);
     var found = list.length > 0;
     var text = candidatesText(list, sites, v.company, busy);
@@ -294,7 +303,7 @@
           // 診断できずに入力画面へもどったとき、選んだ URL が入った「URLで調べる」を開く
           draft.url = site.url;
           tab = "url";
-          submit({ url: site.url, company: v.company, email: v.email }, hp);
+          submit({ url: site.url, company: v.company, email: v.email });
         });
       });
     }
@@ -302,10 +311,9 @@
     qs("#backBtn", s).addEventListener("click", renderForm);
   }
 
-  function submit(v, hp) {
+  function submit(v) {
     renderLoading();
-    var body = { url: v.url, company: v.company, email: v.email, agree: true, hp_x: hp, t: Date.now() - formShownAt };
-    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "omit" })
+    post(function () { return { url: v.url, company: v.company, email: v.email, agree: true, t: Date.now() - formShownAt }; })
       .then(function (r) {
         if (r.status === 429) throw new Error("429");
         if (r.status === 409) throw new Error("409");

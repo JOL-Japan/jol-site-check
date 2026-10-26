@@ -354,11 +354,10 @@
   }
 
   // リスクがありそうなときに選んでもらう、その後の対応
-  // 選択肢のアイコン（白い線）。レポート＝封筒、調査の依頼＝人と右上のスパナ
+  // 選択肢のアイコン（白い線）。レポート＝書類、詳しい調査＝盾を虫めがねで調べる
   var CH_ICON = {
-    wait: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.8 6.8L12 12.6l8.2-5.8"/></svg>',
-    contact: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12.2" r="3"/><path d="M2.6 21.4c.6-3.5 2.8-5.4 5.4-5.4s4.8 1.9 5.4 5.4"/>' +
-      '<g transform="translate(12 0.5) scale(0.5)" stroke-width="3.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></g></svg>'
+    wait: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7.5A2 2 0 0 0 5.5 5v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7.5z"/><path d="M14 3v4.5h4.5"/><path d="M8.8 12h6.4M8.8 15.2h6.4M8.8 18.2h3.8"/></svg>',
+    contact: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5l6 2.3v4.4c0 3.9-2.6 6.8-6 7.9-3.4-1.1-6-4-6-7.9V4.8z"/><path d="M6.8 9.6l2 2 3.6-3.8"/><circle cx="16.6" cy="16.6" r="3.5"/><path d="M19.2 19.2l2.3 2.3"/></svg>'
   };
   var CHOICES = [
     { k: "wait", t: "貴社のリスク詳細レポートをメールで受け取る（無料）", d: "リスクの高い企業様から順番にお送りします" },

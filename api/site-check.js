@@ -1,5 +1,5 @@
 /*
- * かんたんサイト診断 受付 (Vercel Function)  /tools/site-check/ から呼ばれる
+ * サイト攻撃リスク診断 受付 (Vercel Function)  /tools/site-check/ から呼ばれる
  *
  * 入力は「サイトのURL・会社名・メールアドレス」の3つだけ。
  * 1. 入力されたページを1回だけ見て (api/_sitescan.js)、PHP・WordPress・リスクの目安を判定

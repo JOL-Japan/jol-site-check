@@ -1,5 +1,5 @@
 /*
- * かんたんサイト診断の受付内容を、社内の管理システムへ送る (Vercel Function 内部モジュール)
+ * サイト攻撃リスク診断の受付内容を、社内の管理システムへ送る (Vercel Function 内部モジュール)
  *
  * 環境変数:
  *   SITE_CHECK_FORWARD_URL   … 送り先 (POST JSON, HTTPS)

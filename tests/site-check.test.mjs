@@ -1,5 +1,5 @@
 /**
- * かんたんサイト診断 (api/site-check.js, api/_sitescan.js, api/_findsite.js) のテスト
+ * サイト攻撃リスク診断 (api/site-check.js, api/_sitescan.js, api/_findsite.js) のテスト
  * 実行: node --test tests/site-check.test.mjs
  */
 import { test, describe, beforeEach, afterEach } from "node:test";

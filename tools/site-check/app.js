@@ -1,5 +1,5 @@
 /* ==========================================================
-   かんたんサイト診断
+   サイト攻撃リスク診断
    - URL・会社名・メールアドレスを /api/site-check へ送り、
      サーバー側で公開ページを見て判定する（ふだんは1回。表示できないときだけ読み直す）
    - 画面に出すのは「あり/なし/リスクの目安」だけ（版数などの詳細は担当者から本人確認のうえ連絡）
@@ -105,7 +105,7 @@
         '<div class="fig-body">' +
           '<span class="fig-badge">たった5秒で分析！</span>' +
           '<div class="fig-art" aria-hidden="true">' + HERO_ART + '</div>' +
-          '<h1 class="fig-title">かんたんサイト診断</h1>' +
+          '<h1 class="fig-title">サイト攻撃リスク診断</h1>' +
           '<p class="fig-sub">ホームページに PHP や WordPress が<br />使われているか、リスクはあるか。<br />外から見える範囲で、目安をお出しします。</p>' +
           '<details class="guard">' +
             '<summary><span class="ti">' + ICONS.shield + '</span><span class="g-t">このサイト自体の<br />セキュリティーを守るしくみ</span><span class="g-chev">' + ICONS.chev + '</span></summary>' +
@@ -116,42 +116,12 @@
         '<p class="fig-copy">JOL all right reserved.</p>' +
       '</div>';
     mount(s);
-    qs("#startBtn", s).addEventListener("click", renderNotice);
+    qs("#startBtn", s).addEventListener("click", renderForm);
   }
 
   /* ============================================================
      注意事項（読んで「理解して進める」を押してから入力へ）
      ============================================================ */
-  // トップの上に浮かぶ小窓として出す（後ろのトップはグレーで覆う）
-  function renderNotice() {
-    var old = qs(".nt-ov");
-    if (old) old.remove();
-    var ov = el('<div class="nt-ov" role="dialog" aria-modal="true" aria-labelledby="ntTitle">' +
-      '<div class="nt-box">' +
-        '<div class="notice">' +
-          '<h2 class="notice-title" id="ntTitle">はじめる前に</h2>' +
-          '<p class="notice-text">' + esc(NOTICE) + '</p>' +
-        '</div>' +
-        '<div class="actions">' +
-          '<button class="btn-primary" id="agreeBtn">理解して進める</button>' +
-          '<button class="btn-ghost" id="backBtn">← もどる</button>' +
-        '</div>' +
-      '</div></div>');
-    document.body.appendChild(ov);
-    var opener = document.activeElement;
-    function close() {
-      document.removeEventListener("keydown", onKey);
-      ov.remove();
-      if (opener && opener.focus) opener.focus();
-    }
-    function onKey(e) { if (e.key === "Escape") close(); }
-    document.addEventListener("keydown", onKey);
-    ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
-    qs("#backBtn", ov).addEventListener("click", close);
-    qs("#agreeBtn", ov).addEventListener("click", function () { close(); renderForm(); });
-    qs("#agreeBtn", ov).focus();
-  }
-
   /* ============================================================
      入力
      ============================================================ */
@@ -187,9 +157,12 @@
         // ボット用の見えない欄
         '<input type="text" name="hp_x" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />' +
         '<label class="consent"><input type="checkbox" name="own" />ご自身または自社で管理しているホームページです</label>' +
+        // 開始前の注意事項（旧「はじめる前に」）もここにまとめる。小窓を挟むと離れる人が増えるため
         '<p class="form-note">入力いただいた内容は、診断結果のご連絡とご相談への対応にだけ使い、JOLの社内で管理します。' +
           (isCompany ? 'ホームページを探すときは、会社名だけを検索サービスに送ります。' : '') +
-          '診断では入力されたページを見るだけで、ログインや侵入はしません。' +
+          'この診断は、公開されているページから外形的に読み取れる情報をもとにした目安です。入力されたページを見るだけで、ログインや侵入はしません。管理画面・プラグイン・サーバーの内部を診断するものではありません。' +
+          '<b>結果をもとにした判断や対応によって生じた損害について、当社は責任を負いかねます。</b>' +
+          '具体的な対応は、ホームページの制作会社・サーバー会社にご確認ください。' +
           '送信により<a href="/privacy" target="_blank" rel="noopener">プライバシーポリシー</a>に同意したものとみなします。</p>' +
         '<div class="actions"><button class="btn-primary" type="submit" id="goBtn">' + (isCompany ? "ホームページを探す" : "診断する") + '</button>' +
         '<button class="btn-ghost" type="button" id="backBtn">← もどる</button></div>' +
@@ -204,7 +177,7 @@
         email: form.elements.email.value.trim(), own: own.checked };
     }
     bindTabs(s, function (next) { draft = read(); tab = next; renderForm(); qs("#tab-" + next).focus(); });
-    qs("#backBtn", s).addEventListener("click", function () { renderIntro(); renderNotice(); });
+    qs("#backBtn", s).addEventListener("click", renderIntro);
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var v = read();
@@ -488,7 +461,7 @@
         c.fillStyle = g; c.fillRect(0, 0, W, H);
         if (logo) c.drawImage(logo, 80, 70, 150, 150 * (logo.height / logo.width || 0.4));
         c.fillStyle = "#fff"; c.textAlign = "left"; c.textBaseline = "alphabetic";
-        c.font = "700 64px " + F; c.fillText("かんたんサイト診断", 80, 290);
+        c.font = "700 64px " + F; c.fillText("サイト攻撃リスク診断", 80, 290);
         c.font = "500 32px " + F; c.globalAlpha = 0.9; c.fillText("外から見える範囲での目安です", 80, 345); c.globalAlpha = 1;
 
         // 結果カード（上の帯に結果の見出し、下に3行）
@@ -554,7 +527,7 @@
     var name = "site-check-result.png";
     var file = typeof File === "function" ? new File([blob], name, { type: "image/png" }) : null;
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: "かんたんサイト診断", text: "かんたんサイト診断の結果です " + TOOL_URL }).catch(function () {});
+      navigator.share({ files: [file], title: "サイト攻撃リスク診断", text: "サイト攻撃リスク診断の結果です " + TOOL_URL }).catch(function () {});
       return;
     }
     var a = document.createElement("a");

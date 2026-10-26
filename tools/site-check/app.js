@@ -372,8 +372,6 @@
 
   function choiceBlock() {
     return '<div class="sc-choice no-print" id="choiceBox">' +
-      '<h3 class="section-label section-label--lg">今後の対応をお選びください</h3>' +
-      '<p class="ch-lead">版数などの詳しい結果は、悪用を防ぐため画面には表示していません。</p>' +
       '<div class="ch-list">' +
       CHOICES.map(function (c) {
         // 「何も対策しない」は控えめな文字だけのボタン。ほかは矢印つきの角丸の CTA

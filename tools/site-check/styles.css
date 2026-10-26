@@ -715,3 +715,21 @@ a { color: inherit; }
 
 
 .form-note b { color: var(--text-soft); font-weight: 700; }
+/* 結果：危険を伝える。赤い丸は脈打つ、放置した場合に起こりうることを赤い枠で */
+.result-head.lv-r .r-dot, .result-head.lv-y .r-dot { animation: rd-pulse 1.6s ease-in-out infinite; }
+@keyframes rd-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(229,22,44,.55); } 60% { box-shadow: 0 0 0 12px rgba(229,22,44,0); } }
+.sc-harm { margin-top: 14px; padding: 16px 18px; border-radius: 14px; background: #fff1f1; border: 1.5px solid #f6b5b5; }
+.sc-harm-t { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: #c4121f; margin-bottom: 8px; }
+.sc-harm-ico { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: #e5162c; color: #fff; font-size: 14px; font-weight: 800; display: grid; place-items: center; }
+.sc-harm ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.sc-harm li { position: relative; padding-left: 16px; font-size: 13px; line-height: 1.65; color: #5c1a1f; }
+.sc-harm li::before { content: ""; position: absolute; left: 3px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #e5162c; }
+.ch-ico { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.2); display: grid; place-items: center; }
+.ch-btn .ch-body { flex: 1; }
+@media (prefers-reduced-motion: reduce) { .result-head.lv-r .r-dot, .result-head.lv-y .r-dot { animation: none; } }
+/* 選択肢：アイコンと矢印を少し小さくして、見出しが1〜2行に収まるように */
+.ch-btn, .ch-wait, .ch-contact { gap: 12px; padding: 14px 14px 14px 14px; }
+.ch-ico { width: 40px; height: 40px; border-radius: 11px; }
+.ch-arrow { width: 28px; height: 28px; border-radius: 8px; }
+.ch-arrow svg { width: 18px; height: 18px; }
+.ch-btn .ch-t { font-size: 15px; word-break: normal; line-break: strict; }

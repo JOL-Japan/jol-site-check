@@ -354,6 +354,11 @@
   }
 
   // リスクがありそうなときに選んでもらう、その後の対応
+  // 選択肢のアイコン（白い線）。レポート＝封筒と書類、対面/オンライン＝人と画面
+  var CH_ICON = {
+    wait: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V12"/><path d="M14 3.5v4h4"/><path d="M9.5 8.5h2.5M9.5 11.5h4"/><rect x="3" y="12.5" width="18" height="8" rx="1.8"/><path d="M3.6 13.2L12 17.6l8.4-4.4"/></svg>',
+    contact: '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7.5" r="2.6"/><path d="M3.5 16.5c.5-2.8 2.3-4.3 4.5-4.3s4 1.5 4.5 4.3"/><rect x="13.5" y="5" width="8" height="6" rx="1.2"/><path d="M16 13.5h3M17.5 11v2.5"/><path d="M3 20.5h18"/></svg>'
+  };
   var CHOICES = [
     { k: "wait", t: "貴社のリスク詳細レポートをメールで受け取る（無料）", d: "リスクの高い企業様から順番にお送りします" },
     { k: "contact", t: "対面/オンラインでより詳しく調査を依頼する", d: "担当者から1営業日以内にご連絡します" },
@@ -374,6 +379,7 @@
         // 「何も対策しない」は控えめな文字だけのボタン。ほかは矢印つきの角丸の CTA
         if (c.k === "none") return '<button type="button" class="ch-btn ch-none" data-choice="none"><span class="ch-t">' + esc(c.t) + '</span></button>';
         return '<button type="button" class="ch-btn ch-' + c.k + '" data-choice="' + c.k + '">' +
+          '<span class="ch-ico" aria-hidden="true">' + CH_ICON[c.k] + '</span>' +
           '<span class="ch-body"><span class="ch-t">' + esc(c.t) + '</span><span class="ch-d">' + esc(c.d) + '</span></span>' +
           '<span class="ch-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></button>';
       }).join("") +
@@ -455,7 +461,7 @@
       .then(function () { return loadImg(A + "logo-white.svg").catch(function () { return null; }); })
       .then(function (logo) {
         c.font = "700 50px " + F;
-        var head = lines(c, LEVELS[lv].label.replace("目安：", ""), W - 240);
+        var head = lines(c, headOf(r, lv).label.replace("目安：", ""), W - 240);
         var rows = [["PHP", r.php ? "使われている形跡あり" : "見つかりませんでした", !r.php],
           ["WordPress", r.wp ? "使われている形跡あり" : "見つかりませんでした", !r.wp], ["PHPに関するリスク", risk, null]];
         c.font = "700 34px " + F;
@@ -545,6 +551,28 @@
     toast("画像を保存しました");
   }
 
+  // 結果の見出しと説明。何が見つかったかで言い分ける（言い切らず「おそれ」「可能性」にとどめる）
+  function headOf(r, lv) {
+    var L = LEVELS[lv];
+    if (lv !== "r" && lv !== "y") return { label: L.label, body: L.body };
+    if (r.php && r.phpLevel === "r") return { label: "古いPHP・WordPressの可能性を感知",
+      body: "外から見える範囲で、サポートが終わった古い版の可能性があります。古い版は公開済みの弱点を狙った攻撃の対象になりやすく、改ざんや情報の流出につながるおそれがあります。早急に運用担当者や技術担当者へ確認してください。" };
+    if (r.php) return { label: "PHPの利用を感知",
+      body: "最新のものに更新されているか要確認です。PHPやWordPressは更新が止まると、公開済みの弱点を狙われやすくなります。外からは確認しきれないので、一度運用担当者や技術担当者に確認しておくと安心です。" };
+    if (lv === "r") return { label: "早急な確認が必要な点を感知",
+      body: "PHPやWordPressの形跡は見つかりませんでしたが、それ以外に早急な確認が必要な点が見つかりました。放置すると、閲覧者に警告が表示されたり、情報の盗み見や改ざんにつながるおそれがあります。" };
+    return { label: "セキュリティ上の注意点を感知",
+      body: "PHPやWordPressの形跡は見つかりませんでしたが、それ以外に確認しておきたい点が見つかりました。一度運用担当者や技術担当者に確認しておくと安心です。" };
+  }
+
+  // 放置した場合に起こりうること（見つかったものに合わせて2〜3件）
+  function harmsOf(r) {
+    if (r.php) return ["ホームページが改ざんされ、不審なページや広告を差し込まれるおそれ", "詐欺サイトやウイルスへ誘導する踏み台にされるおそれ", "お問い合わせなどで送られた情報が流出するおそれ"];
+    if (/不審な記述/.test(r.other || "")) return ["不審なページや広告の表示が続くおそれ", "検索結果やブラウザで「危険なサイト」と表示されるおそれ"];
+    if (otherBad(r)) return ["ブラウザに「安全ではありません」と表示され、閲覧者が離れるおそれ", "入力された情報が途中で盗み見られるおそれ"];
+    return [];
+  }
+
   function renderResult(r, ctx) {
     var lv = LEVELS[r.level] ? r.level : "x";
     var L = LEVELS[lv];
@@ -552,14 +580,14 @@
     // 「PHPに関するリスク」は PHP だけで見た目安（証明書などは「それ以外のリスク」）
     var plv = RISK[r.phpLevel] ? r.phpLevel : lv, risk = RISK[plv];
     // PHP は見つからず、それ以外のリスクで要確認・高い可能性になったときの説明
-    var body = (lv === "r" || lv === "y") && r.php === false ? "PHPやWordPressの形跡は見つかりませんでしたが、それ以外のリスクが見つかりました。早めに制作会社・サーバー会社へ確認することをおすすめします。" : L.body;
+    var head = headOf(r, lv), harms = lv === "r" || lv === "y" ? harmsOf(r) : [];
     var s = el('<div class="screen"></div>');
     var html = header() +
       '<div class="result-head lv-' + lv + '">' +
-        '<p class="r-eyebrow">診断結果</p>' +
+        '<p class="r-eyebrow">診断結果（目安）</p>' +
         '<div class="r-emoji"><span class="r-dot"></span></div>' +
-        '<p class="r-type">' + esc(L.label) + '</p>' +
-        '<p class="r-catch">' + esc(body) + '</p>' +
+        '<p class="r-type">' + esc(head.label) + '</p>' +
+        '<p class="r-catch">' + esc(head.body) + '</p>' +
       '</div>' +
       '<ul class="sc-list">' +
         row("PHP", r.php, "使われている形跡あり", "見つかりませんでした") +
@@ -567,7 +595,9 @@
         '<li class="sc-row sc-lv-' + plv + '"><span class="sc-k">PHPに関するリスク</span><span class="sc-v">' + risk + '</span></li>' +
         (r.other ? '<li class="sc-row sc-row--text' + (otherBad(r) ? ' sc-other-bad' : '') + '"><span class="sc-k">それ以外のリスク</span>' +
           '<span class="sc-t">' + esc(r.other) + '</span></li>' : '') +
-      '</ul>';
+      '</ul>' +
+      (harms.length ? '<div class="sc-harm"><p class="sc-harm-t"><span class="sc-harm-ico" aria-hidden="true">!</span>放置した場合に起こりうること</p><ul>' +
+        harms.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></div>' : '');
 
     // リスクがありそう（高い可能性・要確認）なときは、その後の対応を選んでもらう
     if ((lv === "r" || lv === "y") && ctx && ctx.rid) {

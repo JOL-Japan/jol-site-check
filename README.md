@@ -13,7 +13,7 @@ https://jol-jp.com/tools/site-check/ のソースコードです。
 |---|---|---|
 | 入力 | 「URLで調べる」はサイトのURL・メールアドレスだけ、「会社名から調べる」は会社名・メールアドレスだけ | [tools/site-check/app.js](tools/site-check/app.js) |
 | 会社名から調べる | 「会社名から調べる」を使ったときだけ、ホームページの候補を探すために **会社名だけ** を検索サービス（Firecrawl）に送ります。メールアドレスは送りません。同じ会社名の結果は24時間使い回します | [api/_findsite.js](api/_findsite.js) |
-| 送信先 | `https://jol-jp.com/api/site-check` のみ。ページの設定（CSP）で、ほかの宛先へは送れないようにしています | [tools/site-check/index.html](tools/site-check/index.html) |
+| 送信先 | 入力内容は `https://jol-jp.com/api/site-check` だけに送ります。ページの設定（CSP）で、外部に送れる先は Meta のピクセル（下の「計測」）だけに絞っています | [tools/site-check/index.html](tools/site-check/index.html) |
 | 診断 | ふだんは入力されたページに GET を **1回** 送るだけです（サイト側の転送は5回まで追います）。表示できないときだけ読み直します：証明書の設定に不備があれば検証を外して1回、https に繋がらなければ http で1回、それでもだめなら同じサイトのトップページを同じ手順で。1回の診断で使う時間は15秒までです。ログイン・パスの総当たり・脆弱性の試し打ちはしません | [api/_sitescan.js](api/_sitescan.js) |
 | 接続しない先 | 社内ネットワーク・クラウドの管理用などの公開されていないアドレス（IPv6・IPv4を埋め込んだ形も含む）、IPアドレスの直接指定、80/443以外のポート。転送先も毎回同じ基準で確かめます | [api/_sitescan.js](api/_sitescan.js) `normalizeUrl` `isPrivateIp` |
 | 画面に出すもの | PHP・WordPress の有無とリスクの目安だけ。版数などは、悪用を防ぐため画面に出しません | [api/_sitescan.js](api/_sitescan.js) `toPublic` |
@@ -22,7 +22,7 @@ https://jol-jp.com/tools/site-check/ のソースコードです。
 | 保存 | ブラウザには保存しません。サーバーでも保存せず、JOL社内の管理システムにだけ転送します（「会社名から調べる」の会社名は上のとおり検索サービスに送ります） | [api/site-check.js](api/site-check.js) [api/_forward.js](api/_forward.js) |
 | ログ | 入力値は残しません。残すのは結果の種類（例：`level=y`）だけ | [api/site-check.js](api/site-check.js) |
 | 回数制限 | 人が続けて使うのは止めません。止めるのはボットらしい使い方だけです（入力画面を開いてすぐの送信、同じIPアドレスから15秒に3回を超える連打、同じIPアドレスから1時間に60回超、同じサイトへ1時間に30回超） | [api/site-check.js](api/site-check.js) [api/_ratelimit.js](api/_ratelimit.js) |
-| 計測 | 広告・アクセス解析のタグはありません | [tools/site-check/index.html](tools/site-check/index.html) |
+| 計測 | 広告の効果を測るため Meta のピクセルを使っています。送るのは「ページを見た（PageView）」「診断結果が出た（Lead）」ことだけで、URL・会社名・メールアドレスなどの入力内容は送りません。ボタンのクリックやページの内容を自動で読み取る機能は止めています | [tools/site-check/index.html](tools/site-check/index.html) |
 
 ## 配信中のファイルと同じか確かめる
 
@@ -34,7 +34,7 @@ curl -s https://jol-jp.com/tools/site-check/ | shasum -a 256   # index.html
 ```
 
 サーバー側（`api/`）は外から中身を取り出せないため、ハッシュでの照合はできません。
-ブラウザ側のファイルで「送信先が `/api/site-check` だけ」であることは確かめられます。
+ブラウザ側のファイルで「入力内容の送信先が `/api/site-check` だけ」であることは確かめられます。
 
 ## 手元でテストする
 

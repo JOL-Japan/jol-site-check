@@ -1,8 +1,9 @@
 # jol-jp.com で配信しているファイルの SHA-256
 # 確認: curl -s https://jol-jp.com/<パス> | shasum -a 256
-3bff11a02ba55de44459cd14a5ca58fdca1e743a92c997cfbcb7999074a79888  /tools/site-check/
-70fc1d76afc36c309e29620027dcb85f2afc7f73a58b96e557b7dd574feb0994  /tools/site-check/app.js
+40e626844d26f583b39fadf6b306b818e338c12f558b411a7d639c28ddfa6d39  /tools/site-check/
+c0e4ae0e84fd3a75544222613eebaf5d0c72b21187329a229fcb2f7706894e68  /tools/site-check/app.js
 d90d8e92b924e5854869bbe99137e8a51dbf46804fa44011b00d405d05b5494b  /tools/site-check/styles.css
+32cbdb7acf9ecf2b5bcaf850c1acfec6b3de7ba3ceb672c8e6e52079ed268a1a  /tools/site-check/pixel.js
 c8d888326fff20aa70ce62d93d04688eeab2bd88b819b310f9da10b311314e55  /tools/site-check/assets/logo-orange.svg
 3d818bba033f3847f69a34d4de9203520212ac2f787f6905ed25699446f278ea  /tools/site-check/assets/logo-white.svg
 6e01c5798a4657767b6f1fa86e7cadf5bb8f9ded51223eeb3f59b919e5d72b17  /tools/site-check/assets/watermark.svg

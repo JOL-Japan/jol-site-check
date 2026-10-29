@@ -7,7 +7,7 @@ set -eu
 SRC="${1:?サイトのリポジトリのパスを指定してください}"
 DENY="$SRC/scripts/oss-denylist.txt"
 cd "$(dirname "$0")/.."
-FILES="tools/site-check/index.html tools/site-check/app.js tools/site-check/styles.css
+FILES="tools/site-check/index.html tools/site-check/app.js tools/site-check/styles.css tools/site-check/pixel.js
 tools/site-check/assets/logo-orange.svg tools/site-check/assets/logo-white.svg tools/site-check/assets/watermark.svg
 api/site-check.js api/_sitescan.js api/_findsite.js api/_forward.js api/_ratelimit.js tests/site-check.test.mjs"
 

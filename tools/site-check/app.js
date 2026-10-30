@@ -12,6 +12,7 @@
   var ENDPOINT = "/api/site-check";
   var A = "/tools/site-check/assets/";
   var OSS_URL = "https://github.com/JOL-Japan/jol-site-check";
+  var AD_URL = "/lp-15nun33m82kh/"; // 結果の下のバナーの行き先（サイト防衛隊の案内ページ）
   var app = document.getElementById("app");
   var draft = { url: "", company: "", email: "", own: false };
   var formShownAt = 0; // 入力画面を開いた時刻（ボットらしい速さの送信を見分ける）
@@ -597,6 +598,10 @@
         (otherBad(r) ? '<li class="sc-row sc-row--text sc-other-bad"><span class="sc-k">それ以外のリスク</span>' +
           '<span class="sc-t">' + esc(r.other) + '</span></li>' : '') +
       '</ul>' +
+      // セカンドビュー：保守サービスの案内バナー（押すと案内ページを別タブで開く。結果の画面はそのまま残る）
+      (lv !== "x" ? '<a class="sc-ad" href="' + AD_URL + '" target="_blank" rel="noopener">' +
+        '<img src="' + A + 'ad-boueitai.webp" width="1536" height="1024" loading="lazy" decoding="async" ' +
+        'alt="サイト防衛隊　技術者によるサイト診断からシステムの運用保守まで。相談料・初期費用無料、保守管理30,000円（税抜）〜。毎月のセキュリティ研修に参加可能" /></a>' : '') +
       (harms.length ? '<div class="sc-harm"><p class="sc-harm-t"><span class="sc-harm-ico" aria-hidden="true">!</span>放置した場合に起こりうること</p><ul>' +
         harms.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></div>' : '');
 

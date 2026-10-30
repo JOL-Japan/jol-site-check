@@ -733,3 +733,10 @@ a { color: inherit; }
 .ch-arrow { width: 28px; height: 28px; border-radius: 8px; }
 .ch-arrow svg { width: 18px; height: 18px; }
 .ch-btn .ch-t { font-size: 15px; word-break: normal; line-break: strict; }
+/* 結果の下の案内バナー：画像そのものを押せるようにし、押せることが伝わるよう少し浮かせる */
+.sc-ad { display: block; margin-top: 16px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 26px rgba(20,20,40,.16);
+  transition: transform .15s ease, box-shadow .15s ease; }
+.sc-ad img { display: block; width: 100%; height: auto; }
+.sc-ad:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(20,20,40,.2); }
+.sc-ad:active { transform: translateY(1px) scale(.995); }
+.sc-ad:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }

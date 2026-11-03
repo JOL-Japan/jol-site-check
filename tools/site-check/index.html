@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <!-- 外部読み込みは Googleフォントと Meta ピクセル（広告の効果測定）だけ。入力の送信先は自サイトの /api だけ -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net; form-action 'none'; base-uri 'none'; object-src 'none'" />
+  <!-- 外部読み込みは Googleフォント・Meta ピクセル（広告の効果測定）・Google タグマネージャー（アクセス解析）だけ。入力の送信先は自サイトの /api だけ -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.facebook.com https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; form-action 'none'; base-uri 'none'; object-src 'none'" />
+  <!-- Google Tag Manager（このページはインラインのスクリプトを止めているため、初期化は /assets/gtm-init.js） -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-TSK3TJMB"></script>
+  <script src="/assets/gtm-init.js"></script>
+  <!-- End Google Tag Manager -->
   <meta name="referrer" content="no-referrer" />
   <title>サイト攻撃リスク診断｜JOL</title>
   <meta name="description" content="ホームページのURLを入れるだけで、PHPやWordPressが使われているか、リスクの目安を確認できます。公開ページを見るだけでサイトに負荷はかけません。結果はあくまで目安です。" />

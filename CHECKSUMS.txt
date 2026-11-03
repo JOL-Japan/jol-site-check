@@ -1,10 +1,11 @@
 # jol-jp.com で配信しているファイルの SHA-256
 # 確認: curl -s https://jol-jp.com/<パス> | shasum -a 256
-40e626844d26f583b39fadf6b306b818e338c12f558b411a7d639c28ddfa6d39  /tools/site-check/
-4cd724467df77e78ce52bf13f2291e9768514ded699a6f7af7140880f4d3be92  /tools/site-check/app.js
+b5b62690cd27d60169f5ecfa653e6574beb22322f359ecd7238b02eab76366ff  /tools/site-check/
+03f82ce98696ef096f918aab11df35326a515a355046975fada23ee090fab504  /tools/site-check/app.js
 135695424abc902d42f0a584d308de0d7c6f29f7e1fe25301bd20128b0fb3213  /tools/site-check/styles.css
 32cbdb7acf9ecf2b5bcaf850c1acfec6b3de7ba3ceb672c8e6e52079ed268a1a  /tools/site-check/pixel.js
 c8d888326fff20aa70ce62d93d04688eeab2bd88b819b310f9da10b311314e55  /tools/site-check/assets/logo-orange.svg
 3d818bba033f3847f69a34d4de9203520212ac2f787f6905ed25699446f278ea  /tools/site-check/assets/logo-white.svg
 6e01c5798a4657767b6f1fa86e7cadf5bb8f9ded51223eeb3f59b919e5d72b17  /tools/site-check/assets/watermark.svg
 b0803da2fb57767b14dbd818f534455956ab3ad3e6f903fd14356cabc9aee009  /tools/site-check/assets/ad-boueitai.webp
+be980f5525f8d38ecfd39aadf7697f60f91f521b40a39e977bad14c38b221d06  /assets/gtm-init.js
